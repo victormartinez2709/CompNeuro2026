@@ -188,26 +188,3 @@ for x in ax:
 fig.suptitle(rf"Hebbian Hopfield network, $N={N}$")
 fig.tight_layout()
 fig.savefig("problem3_capacity.pdf")
-
-#Problem 4
-tau, ratio = 20.0, 1.2  # tau_+ = tau_- (ms), A_-/A_+
-
-def pairing_change(f, delta):  #Delta w / A_+ per period, T in ms
-    T = 1000/f
-    return (np.exp(-delta/tau) - ratio*np.exp(-(T - delta)/tau))/(1 - np.exp(-T/tau))
-
-f = np.linspace(1, 50, 500)
-f_switch = 1000/(20*(1 + np.log(ratio)))
-print(f"pre-before-post switch frequency = {f_switch:.2f} Hz")
-
-plt.figure(figsize=(7, 4.5))
-plt.plot(f, pairing_change(f, 10.0), label="pre before post")
-plt.plot(f, pairing_change(f, 1000/f - 10.0), label="post before pre")
-plt.axhline(0, linestyle="--", linewidth=1)
-plt.axvline(f_switch, linestyle=":", linewidth=1, label=f"switch = {f_switch:.2f} Hz")
-plt.xlabel("pairing frequency $f$ (Hz)")
-plt.ylabel(r"$\Delta w/A_+$ per period")
-plt.title(r"$\tau_+=\tau_-=20$ ms, $A_-=1.2A_+$, 10 ms lag")
-plt.legend()
-plt.tight_layout()
-plt.savefig("problem4_pairing.pdf")
